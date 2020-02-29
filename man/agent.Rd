@@ -4,16 +4,10 @@
 \alias{agent}
 \title{Define an agent}
 \usage{
-agent(id = NULL, type = "agent", location_y = NULL, location_x = NULL)
+agent(params)
 }
 \arguments{
-\item{id}{An ID for the agent. Can be a number or character name.}
-
-\item{type}{Character string describing the agent's type e.g. 'predator' or 'prey'}
-
-\item{location_y}{Agent's starting y coordinate}
-
-\item{location_x}{Agent's starting x coordinate}
+\item{params}{Named list of parameters that define the agent}
 }
 \value{
 An 'agent' S3 object
