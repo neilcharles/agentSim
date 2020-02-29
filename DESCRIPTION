@@ -1,0 +1,22 @@
+Package: agentSim
+Type: Package
+Title: Flexible Agent Based Modelling Framework 
+Version: 0.1.0.9999
+Author: Neil Charles
+Maintainer: Neil Charles <neil.d.charles@gmail.com>
+Description: A flexible framework for running agent based modelling simulations.
+    Agents can be defined with any required properties and run a user-defined
+    function in each time step. Supports multiple agent types,
+    with simultaneous updating of parameters for each agent.
+URL: http://neilcharles.github.io/agentSim/
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.0.2
+Language: en-GB
+Imports: 
+    magrittr,
+    tibble,
+    dplyr,
+    purrr,
+    glue
