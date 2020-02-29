@@ -47,6 +47,7 @@ setLocation <- function(x, newLocation){
   UseMethod('setLocation', x)
 }
 
+#' @export
 setLocation.agent <- function(x, newLocation){
   x$location_y <- newLocation[1]
   x$location_x <- newLocation[2]
@@ -56,7 +57,8 @@ setLocation.agent <- function(x, newLocation){
 #' @title Set an agent's task
 #'
 #' @description Set the task for a single agent, or for a set of agents within a population,
-#' which will be executed for each time step when the simulation is run
+#' which will be executed for each time step when the simulation is run. The function you define
+#' must take the arguments \code{agent} and \code{population} and must return \code{agent}
 #'
 #' @param x An agent or a population of agents
 #' @param task A function to be executed in each time step. You must pass \code{agent} and \code{population} as arguments to the function (see example below)
@@ -76,9 +78,10 @@ setLocation.agent <- function(x, newLocation){
 #'   location_y = runif(3, 0, 1)
 #'   )
 #'
-#' #Define the task function, which will be run in each time step.
-#' #You must pass 'agent' and 'population' as arguments to the function
-#' #so that the agent can see itself and other agents when it runs its task.
+#' #Define the task function, which will be run by an agent in each time step.
+#' #You must pass 'agent' and 'population' as arguments to the function and must
+#' #return 'agent' so that the agent can see itself and other agents when it
+#' #runs its task and so that it will update in the next time step.
 #' move_and_report <- function(agent, population){
 #'
 #'   #Move the agent
@@ -90,6 +93,8 @@ setLocation.agent <- function(x, newLocation){
 #'     paste0("Agent '", agent$id, "' position: ",
 #'     agent$location_y, ", ", agent$location_x)
 #'   )
+#'
+#'   agent
 #' }
 #'
 #' #Create agents and assign tasks

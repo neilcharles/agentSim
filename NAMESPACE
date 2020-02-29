@@ -2,6 +2,7 @@
 
 S3method(iterateSim,simulation)
 S3method(runSim,simulation)
+S3method(setLocation,agent)
 S3method(setTask,agent)
 S3method(setTask,population)
 export("%>%")

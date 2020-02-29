@@ -42,6 +42,8 @@ move_and_report <- function(agent, population){
     paste0("Agent '", agent$id, "' position: ",
     agent$location_y, ", ", agent$location_x)
   )
+
+  agent
 }
 
 #Set up the simulation

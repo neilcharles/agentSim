@@ -31,6 +31,8 @@
 #'     paste0("Agent '", agent$id, "' position: ",
 #'     agent$location_y, ", ", agent$location_x)
 #'   )
+#'
+#'   agent
 #' }
 #'
 #' #Set up the simulation
@@ -58,7 +60,16 @@ agentSim <- function(agent_population = NULL,
 
   }
 
+#' @title Run the next time step in a simulation
+#'
+#' @description Usually only called as part of runSim()
+#'
+#' @param x A simulation
+#'
+#' @return A simulation
 #' @export
+#'
+#' @examples
 iterateSim <- function(x){
   UseMethod("iterateSim", x)
 }
@@ -108,6 +119,8 @@ iterateSim.simulation <- function(x){
 #'     paste0("Agent '", agent$id, "' position: ",
 #'     agent$location_y, ", ", agent$location_x)
 #'   )
+#'
+#'   agent
 #' }
 #'
 #' #Run the simulation with 10 time steps
