@@ -1,0 +1,45 @@
+---
+title: "simple-example"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{simple-example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+total_time <- 10
+
+init_pop <- tibble::tibble(
+  id = c(1:50),
+  x = runif(50, 0, 1),
+  y = runif(50, 0, 1)
+)
+
+init_env <- tibble::tibble(
+  weather = rep('rain', total_time),
+  temperature = rep(15, total_time),
+)
+
+
+agent_task <- create_agent_task({
+  print(self$id)
+})
+
+
+sim <- agents_from_param_table(init_pop) %>%
+  set_task(agent_task) %>%
+  agent_sim(time_total = total_time, environment = init_env) %>% 
+  run_sim()
+
+sim %>% 
+  parse_history('environment')
+
+```

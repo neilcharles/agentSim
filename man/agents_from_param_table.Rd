@@ -16,3 +16,12 @@ list of agents
 \description{
 Creates a set of agents from a parameter table
 }
+\examples{
+init_pop <- tibble::tibble(
+  id = c(1:50),
+  x = runif(50, 0, 1),
+  y = runif(50, 0, 1)
+  )
+
+new_agents <- agents_from_param_table(init_pop)
+}

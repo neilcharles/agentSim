@@ -7,9 +7,9 @@
 agent_sim(agents = NULL, time_total = NULL)
 }
 \arguments{
-\item{time_total}{Number of time ticks to simulate}
+\item{agents}{}
 
-\item{agent_population}{A population of agents}
+\item{time_total}{Number of time ticks to simulate}
 }
 \value{
 a simulation
@@ -18,36 +18,18 @@ a simulation
 Set up an agentSim simulation
 }
 \examples{
-#Build an example simulation in which each agent moves and then prints its coordinates to the console in each time step
-
-#A parameter table to define 3 agents placed at random coordinates
+#Example simulation in which each agent prints its own id to the console
 init_pop <- tibble::tibble(
-  id = c(1:3),
-  type = "agent",
-  location_x = runif(3, 0, 1),
-  location_y = runif(3, 0, 1)
+  id = c(1:50),
+  x = runif(50, 0, 1),
+  y = runif(50, 0, 1)
   )
 
-#Define the task function, which will be run in each time step.
-#You must pass 'agent' and 'population' as arguments to the function
-#so that the agent can see itself and other agents when it runs its task.
-move_and_report <- function(agent, population){
+agent_task <- create_agent_task({
+  print(agent$id)
+  })
 
-  #Move the agent
-  agent$location_y <- agent$location_y + runif(1, -0.5, 0.5)
-  agent$location_x <- agent$location_x + runif(1, -0.5, 0.5)
-
-  #Print the agent's position to the console
-  print(
-    paste0("Agent '", agent$id, "' position: ",
-    agent$location_y, ", ", agent$location_x)
-  )
-
-  agent
-}
-
-#Set up the simulation
-simulation <- makePopulation(init_pop) \%>\%
-  setTask(move_and_report) \%>\%
-  agentSim(10)
+sim <- agents_from_param_table(init_pop) \%>\%
+  set_task(agent_task) \%>\%
+  agent_sim(10)
 }

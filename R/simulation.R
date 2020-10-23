@@ -14,28 +14,25 @@
 #'   y = runif(50, 0, 1)
 #'   )
 #'
-#' agent_task <- function(agent, population){
+#' agent_task <- create_agent_task({
 #'   print(agent$id)
-#'   agent
-#'   }
+#'   })
 #'
 #' sim <- agents_from_param_table(init_pop) %>%
 #'   set_task(agent_task) %>%
-#'   agent_sim(100)
+#'   agent_sim(10)
 agent_sim <- function(agents = NULL,
-           time_total = NULL) {
+           time_total = NULL, environment = list()) {
 
     me <- list(
       agents = agents,
       time_total = time_total,
       time_cur = 1,
+      environment = environment,
       history = tibble::tibble(
         t = seq(1:time_total),
-        log = NA
       )
     )
-
-    me$history$log[1] <- list(agents)
 
     class(me) <- append(class(me), "simulation")
 
@@ -103,6 +100,9 @@ run_sim.simulation <- function(x, debug = FALSE){
 
   pb = utils::txtProgressBar(min = 2, max = x$time_total, initial = 2)
 
+  x$history$agents[[1]] <- x$agents
+  x$history$environment[[1]] <- x$environment
+
   for(t in 2:x$time_total){
 
     if(debug) print(glue::glue("time: {t}"))
@@ -112,14 +112,16 @@ run_sim.simulation <- function(x, debug = FALSE){
 
       #Run task using t-1 parameters so that agents act simultaneously
       x$agents[[a]] <-
-        x$agents[[a]]$task(agent = x$agents[[a]],
-                                     population = x$history$log[[t - 1]])
+        x$agents[[a]]$task(self = x$agents[[a]],
+                          population = x$history$agents[[t - 1]],
+                           environment = x$history$environment[[t - 1]])
     }
 
     utils::setTxtProgressBar(pb, t)
 
-    #Store updated agent parameters
-    x$history$log[[t]] <- x$agents
+    #Store updated agent and environment parameters
+    x$history$agents[[t]] <- x$agents
+    x$history$environment[[t]] <- x$environment
 
   }
 

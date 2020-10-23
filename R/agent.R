@@ -23,6 +23,39 @@ agent <-
 
   }
 
+#' @title Create a task to be executed by agents
+#'
+#' @description
+#' Agents executing a task have access to three objects:
+#' * \code{self} is the executing agent's S3 object in the current time step
+#' * \code{population} holds parameters for the entire agent population at time t-1
+#' * \code{environment} holds parameters for the environment at time t-1
+#'
+#' \code{population} and \code{environment} return parameters for the previous time step, to allow
+#' all agents to execute their tasks using the same parameter set, before time moves to
+#' the next 't' and the population and environment are updated.
+#'
+#' @param f code to be run by agents at each time step.
+#'
+#' @return A function to be run during simulations
+#' @export
+#'
+#' @examples
+#' agent_task <- create_agent_task({
+#'   print(self$id)
+#' })
+create_agent_task <- function(f){
+
+  agent_expression <- substitute(f)
+
+  task <- function(self, population, environment){
+    eval(agent_expression)
+    self
+  }
+
+  task
+}
+
 #' @title Set the task for an agent or a list of agents
 #'
 #' @description Set the task for a single agent, or for a list of agents,
