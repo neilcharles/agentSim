@@ -2,18 +2,28 @@
 % Please edit documentation in R/agent.R
 \name{create_agent_task}
 \alias{create_agent_task}
-\title{Create a task to be executed by an agent(s)}
+\title{Create a task to be executed by agents}
 \usage{
 create_agent_task(f)
 }
+\arguments{
+\item{f}{code to be run by agents at each time step.}
+}
 \value{
-A function with (agent, population) as pre-defined inputs and that returns agent
+A function to be run during simulations
 }
 \description{
-Create a task to be executed by an agent(s)
+Agents executing a task have access to three objects:
+* \code{self} is the executing agent's S3 object in the current time step
+* \code{population} holds parameters for the entire agent population at time t-1
+* \code{environment} holds parameters for the environment at time t-1
+
+\code{population} and \code{environment} return parameters for the previous time step, to allow
+all agents to execute their tasks using the same parameter set, before time moves to
+the next 't' and the population and environment are updated.
 }
 \examples{
 agent_task <- create_agent_task({
-  print(agent$id)
+  print(self$id)
 })
 }

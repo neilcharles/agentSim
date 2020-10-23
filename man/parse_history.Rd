@@ -4,7 +4,7 @@
 \alias{parse_history}
 \title{Get records from an agentSim history}
 \usage{
-parse_history(sim)
+parse_history(sim, area = "agents")
 }
 \arguments{
 \item{sim}{An agentSim simulation}
