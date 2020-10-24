@@ -4,7 +4,12 @@
 \alias{agent_sim}
 \title{Set up an agentSim simulation}
 \usage{
-agent_sim(agents = NULL, time_total = NULL, environment = list())
+agent_sim(
+  agents = NULL,
+  time_total = NULL,
+  environment = list(),
+  referee = NULL
+)
 }
 \arguments{
 \item{agents}{}

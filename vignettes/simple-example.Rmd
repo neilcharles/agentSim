@@ -18,28 +18,34 @@ knitr::opts_chunk$set(
 total_time <- 10
 
 init_pop <- tibble::tibble(
-  id = c(1:50),
-  x = runif(50, 0, 1),
-  y = runif(50, 0, 1)
+  id = c(1:5),
+  x = runif(5, 0, 1),
+  y = runif(5, 0, 1)
 )
 
 init_env <- tibble::tibble(
-  weather = rep('rain', total_time),
-  temperature = rep(15, total_time),
+  weather = 'rain',
+  temperature = 15,
 )
 
-
 agent_task <- create_agent_task({
-  print(self$id)
+  print(glue::glue("hello, I'm agent {self$id}"))
 })
+
+referee_task <- create_referee_task({
+  print("hello, I'm the referee")
+})
+
+referee <- referee() %>% 
+  set_task(referee_task)
 
 
 sim <- agents_from_param_table(init_pop) %>%
   set_task(agent_task) %>%
-  agent_sim(time_total = total_time, environment = init_env) %>% 
+  agent_sim(time_total = total_time, environment = init_env, referee = referee) %>% 
   run_sim()
 
 sim %>% 
-  parse_history('environment')
+  parse_history('agents')
 
 ```

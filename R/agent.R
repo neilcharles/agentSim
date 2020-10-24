@@ -12,8 +12,8 @@ agent <-
 
     me <- params
 
-    #Empty task, do nothing and return unaltered agent
-    me$task <- function(agent, population) me
+    #Empty placeholder task, do nothing and return the input
+    me$task <- function(x) x
 
     me$active <- TRUE
 
@@ -83,6 +83,14 @@ set_task.agent <- function(x, task){
 
   x
 }
+
+#' @export
+set_task.referee <- function(x, task){
+  x$task <- task
+
+  x
+}
+
 
 #' @export
 set_task.default <- function(x, task){

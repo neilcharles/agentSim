@@ -25,11 +25,13 @@ parse_history <- function(sim, area = 'agents'){
   if(area=='agents'){
     sim$history %>%
       tidyr::unnest_longer('agents') %>%
+      tidyr::unnest_longer('agents') %>%
       tidyr::unnest_wider('agents') %>%
       dplyr::select(-task, -environment)
   } else if (area=='environment') {
     sim$history %>%
       dplyr::select(-agents) %>%
+      tidyr::unnest(cols = c(environment)) %>%
       tidyr::unnest(cols = c(environment))
   }
 }

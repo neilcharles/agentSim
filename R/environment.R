@@ -34,10 +34,10 @@ sim_environment <-
 #' new_agents <- agents_from_param_table(init_env)
 environment_from_param_table <- function(param_table) {
   param_table %>%
-    dplyr::mutate(temp_time = dplyr::row_number()) %>%
-    tidyr::nest(data = -temp_time) %>%
+    dplyr::mutate(temp = dplyr::row_number()) %>%
+    tidyr::nest(data = -temp) %>%
     dplyr::mutate(data = purrr::map(data, as.list)) %>%
-    dplyr::select(-temp_time) %>%
+    dplyr::select(-temp) %>%
     dplyr::mutate(environment = purrr::map(data, sim_environment)) %>%
     dplyr::pull(environment)
 }

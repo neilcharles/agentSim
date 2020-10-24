@@ -22,16 +22,17 @@
 #'   set_task(agent_task) %>%
 #'   agent_sim(10)
 agent_sim <- function(agents = NULL,
-           time_total = NULL, environment = list()) {
+           time_total = NULL, environment = list(), referee = NULL) {
 
     me <- list(
       agents = agents,
       time_total = time_total,
       time_cur = 1,
       environment = environment,
-      history = tibble::tibble(
-        t = seq(1:time_total),
-      )
+      referee = referee,
+      history = tibble::tibble(t = 1:time_total,
+                               agents = rep(NA, time_total),
+                               environment = rep(NA, time_total))
     )
 
     class(me) <- append(class(me), "simulation")
@@ -57,7 +58,7 @@ iterate_sim <- function(x){
 #' @export
 iterate_sim.simulation <- function(x){
   if(x$time_cur < x$time_total){
-    x$history$log[x$time_cur] <- list(x$agents)
+    x$history[x$time_cur] <- list(x$agents)
     x$time_cur <- x$time_cur
     return(x)
   } else {
@@ -100,8 +101,8 @@ run_sim.simulation <- function(x, debug = FALSE){
 
   pb = utils::txtProgressBar(min = 2, max = x$time_total, initial = 2)
 
-  x$history$agents[[1]] <- x$agents
-  x$history$environment[[1]] <- x$environment
+  x$history$agents[[1]] <- list(x$agents)
+  x$history$environment[[1]] <- list(x$environment)
 
   for(t in 2:x$time_total){
 
@@ -117,12 +118,14 @@ run_sim.simulation <- function(x, debug = FALSE){
                            environment = x$history$environment[[t - 1]])
     }
 
+    #Run the referee task
+    x <- x$referee$task(x)
+
     utils::setTxtProgressBar(pb, t)
 
     #Store updated agent and environment parameters
-    x$history$agents[[t]] <- x$agents
-    x$history$environment[[t]] <- x$environment
-
+    x$history$agents[[t]] <- list(x$agents)
+    x$history$environment[[t]] <- list(x$environment)
   }
 
   x
